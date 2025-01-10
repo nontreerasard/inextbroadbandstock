@@ -1,0 +1,467 @@
+:root {
+    --primary-color: #2196F3;
+    --secondary-color: #1976D2;
+    --success-color: #4CAF50;
+    --danger-color: #f44336;
+    --background-color: #f5f7fa;
+    --text-color: #2c3e50;
+    --border-color: #e0e6ed;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Sarabun', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.login-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+}
+
+.login-box {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 300px;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 10px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Layout Improvements */
+.main-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Header Section */
+header {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.header-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.header-content h1 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+/* Search Box */
+.search-box {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+#searchInput:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.1);
+}
+
+/* Control Buttons */
+.header-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.header-controls button {
+    min-width: 120px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.header-controls button:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.header-controls #logoutBtn {
+    background-color: #e0e0e0;
+    color: var(--text-color);
+}
+
+.header-controls #logoutBtn:hover {
+    background-color: #d0d0d0;
+}
+
+/* Table Styles */
+.table-container {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: auto;
+}
+
+table {
+    width: 100%;
+    margin: 0;
+}
+
+th, td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+}
+
+th {
+    background-color: #f8fafc;
+    padding: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f8fafc;
+    transition: background-color 0.3s ease;
+}
+
+/* Modal Styles - ปรับปรุงใหม่ */
+.modal {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    animation: modalFade 0.3s ease-out;
+}
+
+@keyframes modalFade {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.modal-header h2 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.modal-body {
+    padding: 1rem 0;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.1);
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modal-footer {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* Button Styles - ปรับปรุงใหม่ */
+.btn {
+    min-width: 120px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+}
+
+.btn-secondary {
+    background-color: #e0e0e0;
+    color: var(--text-color);
+}
+
+.btn-secondary:hover {
+    background-color: #d0d0d0;
+}
+
+/* Action Buttons */
+.action-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-width: 80px;
+    margin: 0 4px;
+}
+
+.action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.borrow-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.borrow-btn:hover {
+    background-color: #3d8b40;
+}
+
+.edit-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: var(--secondary-color);
+}
+
+.return-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.return-btn:hover {
+    background-color: #d32f2f;
+}
+
+/* Helper Text ปรับปรุง */
+.helper-text {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.5rem;
+    padding-left: 0.5rem;
+}
+
+/* Required Field Indicator */
+.required::after {
+    content: '*';
+    color: var(--danger-color);
+    margin-left: 4px;
+}
+
+/* Status Colors */
+.status-available {
+    color: var(--success-color);
+    font-weight: 500;
+}
+
+.status-borrowed {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-container {
+        padding: 1rem;
+    }
+
+    header {
+        padding: 1.5rem;
+    }
+
+    .header-content h1 {
+        font-size: 2rem;
+    }
+
+    .table-container {
+        padding: 1rem;
+    }
+
+    .action-btn {
+        min-width: auto;
+        padding: 0.5rem 1rem;
+    }
+}
+
+/* History Page Styles */
+#historyPage {
+    background-color: var(--background-color);
+}
+
+#historyPage header {
+    margin-bottom: 2rem;
+}
+
+#historyPage .header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+#historyPage h1 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 2.2rem;
+}
+
+#historyPage .header-controls {
+    padding-top: 0;
+    border-top: none;
+}
+
+#historyPage .table-container {
+    margin-top: 1rem;
+}
+
+#historyTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#historyTable th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    padding: 1rem;
+    text-align: left;
+    color: var(--text-color);
+}
+
+#historyTable td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#historyTable tr:hover {
+    background-color: #f8fafc;
+    transition: background-color 0.3s ease;
+}
+
+/* Empty State Message */
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+/* Responsive Design for History Page */
+@media (max-width: 768px) {
+    #historyPage h1 {
+        font-size: 1.8rem;
+    }
+
+    #historyTable {
+        font-size: 0.9rem;
+    }
+
+    #historyTable th,
+    #historyTable td {
+        padding: 0.8rem;
+    }
+}

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inext Broadband Stock</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Popup container - can be anything you want */
+        .popup {
+            position: fixed;
+            display: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+
+        /* Popup content */
+        .popup-content {
+            margin: 15% auto;
+            padding: 20px;
+            background: white;
+            width: 300px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .popup-content input {
+            width: 80%;
+            margin: 10px 0;
+            padding: 10px;
+        }
+
+        .popup-content button {
+            padding: 10px 20px;
+        }
+
+        /* Borrow Form Styles */
+        .borrow-form {
+            display: grid;
+            gap: 10px;
+            padding: 15px;
+        }
+        
+        .borrow-form input, .borrow-form button {
+            padding: 8px;
+            margin: 5px 0;
+        }
+
+        /* เพิ่ม styles สำหรับปรับปรุง UI */
+        .header-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        #searchInput {
+            min-width: 200px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f5f5f5;
+        }
+
+        button {
+            cursor: pointer;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <!-- เพิ่ม Sarabun font -->
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="main-container" id="mainContent">
+        <header>
+            <div class="header-content">
+                <h1>Inext Broadband Stock📦</h1>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="ค้นหา....🔍">
+                </div>
+                <div class="header-controls">
+                    <button id="loginBtn" class="btn btn-primary" onclick="showLoginPopup()">เข้าสู่ระบบ</button>
+                    <button id="logoutBtn" class="btn btn-secondary" onclick="logout()" style="display: none;">ออกจากระบบ</button>
+                    <button id="historyBtn" class="btn btn-primary" onclick="showHistory()" style="display: none;">ประวัติการยืม-คืน</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="table-container">
+            <table id="stockTable">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>S/N</th>
+                        <th>เลขรหัสยืม</th>
+                        <th>ชื่อผู้ยืม</th>
+                        <th>วันที่ยืม</th>
+                        <th>วันที่ครบกำหนด</th>
+                        <th>สถานะ</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- แก้ไข Login Modal -->
+    <div class="modal" id="loginPopup">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>เข้าสู่ระบบ</h2>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="required" for="username">ชื่อผู้ใช้</label>
+                        <input type="text" id="username" class="form-control" placeholder="กรอกชื่อผู้ใช้">
+                    </div>
+                    <div class="form-group">
+                        <label class="required" for="password">รหัสผ่าน</label>
+                        <input type="password" id="password" class="form-control" placeholder="กรอกรหัสผ่าน">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="hideLoginPopup()">ยกเลิก</button>
+                <button class="btn btn-primary" onclick="login()">เข้าสู่ระบบ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- แก้ไข Borrow Modal -->
+    <div class="modal" id="borrowPopup">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>ยืมอุปกรณ์</h2>
+            </div>
+            <div class="modal-body">
+                <form class="borrow-form" id="borrowForm" onsubmit="submitBorrow(event)">
+                    <input type="hidden" id="itemId">
+                    <div class="form-group">
+                        <label class="required" for="borrowCode">รหัสประจำตัวลูกค้า</label>
+                        <input type="text" id="borrowCode" class="form-control" required>
+                        <div class="helper-text">กรอกรหัสประจำตัวลูกค้า เช่น CUS001</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required" for="borrowerName">ชื่อลูกค้า</label>
+                        <input type="text" id="borrowerName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required" for="borrowDate">วันที่ยืม</label>
+                        <input type="date" id="borrowDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required" for="dueDate">กำหนดวันคืน</label>
+                        <input type="date" id="dueDate" class="form-control" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="hideBorrowPopup()">ยกเลิก</button>
+                <button type="submit" class="btn btn-primary" form="borrowForm">ยืนยันการยืม</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- แก้ไข Edit Modal ให้มีรูปแบบเดียวกับ Login และ Borrow -->
+    <div class="modal" id="editPopup">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>แก้ไขข้อมูลอุปกรณ์</h2>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" onsubmit="submitEdit(event)">
+                    <input type="hidden" id="editItemId">
+                    <div class="form-group">
+                        <label class="required" for="editModel">Model</label>
+                        <input type="text" id="editModel" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required" for="editSerialNumber">Serial Number</label>
+                        <input type="text" id="editSerialNumber" class="form-control" required>
+                    </div>
+                    
+                    <!-- ส่วนข้อมูลการยืม -->
+                    <div class="borrow-fields">
+                        <div class="form-group">
+                            <label for="editBorrowCode">รหัสประจำตัวลูกค้า</label>
+                            <input type="text" id="editBorrowCode" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="editBorrower">ชื่อลูกค้า</label>
+                            <input type="text" id="editBorrower" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="editBorrowDate">วันที่ยืม</label>
+                            <input type="date" id="editBorrowDate" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="editDueDate">วันครบกำหนด</label>
+                            <input type="date" id="editDueDate" class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="hideEditPopup()">ยกเลิก</button>
+                <button type="submit" class="btn btn-primary" form="editForm">บันทึก</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- แก้ไขหน้าประวัติ -->
+    <div id="historyPage" style="display: none;" class="main-container">
+        <header>
+            <div class="header-content">
+                <h1>ประวัติการยืม-คืน</h1>
+                <div class="header-controls">
+                    <button class="btn btn-secondary" onclick="hideHistory()">
+                        <i class="fas fa-arrow-left"></i> กลับ
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="table-container">
+            <table id="historyTable">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>S/N</th>
+                        <th>เลขรหัสยืม</th>
+                        <th>ชื่อผู้ยืม</th>
+                        <th>วันที่ยืม</th>
+                        <th>วันที่คืน</th>
+                        <th>วันที่ครบกำหนด</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
